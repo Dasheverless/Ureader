@@ -24,7 +24,7 @@
 **图表**: Recharts
 **概念图谱**: React Force Graph
 **存储**: Capacitor Storage (本地存储)
-**AI接口**: 支持多后端配置（OpenAI、Claude等）
+**AI接口**: Hermes（默认），支持多后端配置
 
 **开发环境**:
 - Node.js 20+
@@ -33,61 +33,59 @@
 
 ## 3. 功能列表
 
-### 3.1 对话主页
+### 3.1 核心基础功能
+- [ ] 多AI后端兼容 - 支持主流AI助手，默认Hermes
+- [ ] 对话历史管理 - 有效利用上下文记忆
+- [ ] 文本输入接口 - 用户可粘贴或输入要分析的文字
+
+### 3.2 被动功能（用户触发）
+
+当用户发送一段文字后，主动弹出快捷选项：
+
+- [ ] 内容总结 - 生成段落/章节摘要
+- [ ] 多语言翻译 - 支持多种语言互译
+- [ ] 深度解读 - 分析文本含义、背景、隐喻
+- [ ] 词汇提取 - 提取关键词、专业术语并解释
+- [ ] 概念图谱 - 快速分析相关、同类概念的关系与总体结构
+- [ ] 主题识别 - 识别文本核心主题
+- [ ] 情感分析 - 分析文本情感基调
+- [ ] 问答模式 - 用户针对文本提问，AI解答
+- [ ] 关键点梳理 - 列出核心要点
+
+### 3.3 主动功能（AI驱动）
+
+通过Skill后台收集信息，主动提供分析：
+
+- [ ] 微信阅读集成 - 同步阅读进度、标注
+- [ ] 阅读进度分析 - 分析阅读速度、习惯
+- [ ] 内容连贯性建议 - 提醒遗忘的前文要点
+- [ ] 相关知识扩展 - 主动提供背景资料
+- [ ] 阅读建议 - 基于阅读行为给出改进建议
+- [ ] 主题关联 - 连接不同章节的相关概念
+- [ ] 后续内容预测 - 基于前文推测后续发展
+- [ ] 阅读提醒 - 根据目标提醒继续阅读
+- [ ] AI问答互动 - 根据对话历史和阅读划线，提出3-5个精选问题询问用户
+
+### 3.4 对话增强功能
+- [ ] 上下文回顾 - 快速回顾之前的对话和分析
+- [ ] 多轮对话 - 针对同一文本深入探讨
+- [ ] 对话导出 - 导出分析记录和对话历史
+- [ ] 个性化设置 - 调整AI回复风格、详细程度
+- [ ] 快捷指令 - 自定义快捷短语触发常用功能
+- [ ] 历史记录 - 保存所有分析对话
+
+### 3.5 数据与统计
+- [ ] 阅读统计 - 阅读时长、进度、速度
+- [ ] 分析历史 - 所有AI分析的记录归档
+- [ ] 词汇本 - 积累学习的新词汇
+- [ ] 主题追踪 - 追踪阅读过的主题领域
+
+### 3.6 UI组件
 - [ ] 聊天界面（气泡式对话）
-- [ ] 文本输入框（支持粘贴和手动输入）
 - [ ] 快捷功能悬浮球
-- [ ] 多轮对话支持
-- [ ] 时间戳显示
-- [ ] 消息发送动画
-
-### 3.2 快捷功能菜单
-- [ ] 网格布局展示功能选项
-- [ ] 总结功能（Summary）
-- [ ] 翻译功能（Translation）
-- [ ] 解读功能（Interpretation）
-- [ ] 概念图谱（Concept Map）
-- [ ] 知识扩展（Knowledge Extension）
-- [ ] 动画展开效果
-
-### 3.3 历史记录
-- [ ] 查看过往对话分析
-- [ ] 搜索功能
-- [ ] 筛选功能
-- [ ] 删除历史记录
-- [ ] 按时间分组展示
-
-### 3.4 设置页面
-- [ ] AI后端配置
-  - [ ] 选择AI助手类型（OpenAI/Claude/自定义）
-  - [ ] 配置API密钥
-  - [ ] API端点配置
-- [ ] 个性化设置
-  - [ ] 回复风格（简洁/详细）
-  - [ ] 详细程度控制
-  - [ ] 快捷指令管理
-- [ ] 数据管理
-  - [ ] 导出数据
-  - [ ] 清除历史
-  - [ ] 应用信息
-
-### 3.5 阅读进度
+- [ ] 网格布局快捷功能菜单
 - [ ] 阅读统计看板
-  - [ ] 阅读时长统计
-  - [ ] 阅读速度计算
-  - [ ] 进度可视化
-- [ ] 目标追踪
-  - [ ] 设置每日目标
-  - [ ] 进度条展示
-- [ ] 数据可视化（图表展示）
-
-### 3.6 概念图谱可视化
-- [ ] 力导向图展示概念关系
-- [ ] 节点大小表示重要程度
-- [ ] 连线粗细表示关联强度
-- [ ] 缩放交互
-- [ ] 拖拽交互
-- [ ] 悬停显示详细信息
+- [ ] 概念图谱可视化（力导向图）
 
 ## 4. UI/UX设计方向
 
@@ -166,7 +164,12 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;
-  type?: 'text' | 'summary' | 'translation' | 'interpretation' | 'concept';
+  type?: 'text' | 'summary' | 'translation' | 'interpretation' | 'concept' | 'vocabulary' | 'theme' | 'sentiment' | 'qa' | 'keypoints';
+  metadata?: {
+    originalText?: string;
+    sourceLanguage?: string;
+    targetLanguage?: string;
+  };
 }
 ```
 
@@ -179,6 +182,8 @@ interface Conversation {
   createdAt: number;
   updatedAt: number;
   tags?: string[];
+  sourceText?: string;
+  concepts?: ConceptNode[];
 }
 ```
 
@@ -195,7 +200,7 @@ interface ReadingStats {
 ### 6.4 用户设置
 ```typescript
 interface UserSettings {
-  aiProvider: 'openai' | 'claude' | 'custom';
+  aiProvider: 'hermes' | 'openai' | 'claude' | 'custom';
   apiKey?: string;
   apiEndpoint?: string;
   responseStyle: 'concise' | 'detailed';
@@ -204,7 +209,74 @@ interface UserSettings {
 }
 ```
 
-## 7. 核心流程
+### 6.5 概念图谱节点
+```typescript
+interface ConceptNode {
+  id: string;
+  name: string;
+  description?: string;
+  importance: number;
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+}
+
+interface ConceptLink {
+  source: string;
+  target: string;
+  strength: number;
+  relation?: string;
+}
+
+interface ConceptGraph {
+  nodes: ConceptNode[];
+  links: ConceptLink[];
+}
+```
+
+### 6.6 词汇条目
+```typescript
+interface VocabularyItem {
+  id: string;
+  word: string;
+  definition: string;
+  sourceText: string;
+  createdAt: number;
+  reviewCount: number;
+  lastReviewed?: number;
+}
+```
+
+### 6.7 主题追踪
+```typescript
+interface ThemeTrack {
+  id: string;
+  theme: string;
+  count: number;
+  firstEncountered: number;
+  lastEncountered: number;
+  relatedConversations: string[];
+}
+```
+
+## 8. AI后端 - Hermes
+
+应用默认连接到Hermes AI网关，参考文档：https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/messaging/weixin
+
+Hermes是一个本地运行的AI网关服务，支持通过微信等平台进行消息交互。应用将通过HTTP API与本地运行的Hermes网关进行通信。
+
+### 8.1 集成架构
+```
+Android应用 <--> Hermes网关 (本地HTTP API) <--> 微信/其他平台
+```
+
+### 8.2 配置要求
+- Hermes网关本地运行地址配置
+- 支持本地存储配置
+- 支持自定义API端点
+
+## 9. 核心流程
 
 ```
 用户打开应用 
@@ -224,7 +296,7 @@ AI处理并返回结果
 查看历史记录/阅读进度统计
 ```
 
-## 8. 验收标准
+## 10. 验收标准
 
 1. ✅ 应用可以正常启动并显示主界面
 2. ✅ 可以输入文本并发送消息
