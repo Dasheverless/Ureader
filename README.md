@@ -10,7 +10,7 @@ AI阅读助手通过AI赋能提升阅读效率和理解深度，打造极简操�
 
 ### 🏗️ 核心基础功能
 
-1. **多AI后端兼容** - 支持主流AI助手，默认Hermes
+1. **多AI后端兼容** - 支持主流AI助手
 2. **对话历史管理** - 有效利用上下文记忆
 3. **文本输入接口** - 用户可粘贴或输入要分析的文字
 
@@ -57,90 +57,3 @@ AI阅读助手通过AI赋能提升阅读效率和理解深度，打造极简操�
 2. **分析历史** - 所有AI分析的记录归档
 3. **词汇本** - 积累学习的新词汇
 4. **主题追踪** - 追踪阅读过的主题领域
-
-## 技术栈
-
-- **前端框架**: React 18 + TypeScript
-- **移动框架**: Capacitor 5 (跨平台Android/iOS)
-- **状态管理**: React Context + useReducer
-- **路由**: React Router v6
-- **样式**: Tailwind CSS
-- **图表**: Recharts
-- **概念图谱**: React Force Graph
-- **存储**: Capacitor Storage (本地存储)
-- **AI接口**: Hermes (默认)，支持多后端配置
-
-## 开发环境
-
-- Node.js 20+
-- Android SDK 34
-- Java 17+
-
-## UI/UX设计
-
-### 设计风格
-- **主色调**: 深蓝 (#1e3a5f) + 柔和绿 (#2ecc71)
-- **按钮风格**: 圆角胶囊形，轻微阴影，悬停上浮效果
-- **字体**: 思源黑体 + Roboto
-- **布局风格**: 卡片式聊天界面，底部固定输入栏
-- **图标风格**: 简约线性图标，lucide-react风格
-
-### 响应式设计
-- 移动优先设计，适配各种安卓屏幕尺寸
-- 触摸优化，按钮最小48dp，适合单手操作
-- 支持横竖屏切换
-
-## AI后端 - Hermes
-
-应用默认连接到Hermes AI网关，参考文档：
-https://hermes-agent.nousresearch.com/docs/zh-Hans/user-guide/messaging/weixin
-
-Hermes是一个本地运行的AI网关服务，支持通过微信等平台进行消息交互。
-
-## 项目结构
-
-```
-src/
-├── components/          # UI组件
-│   ├── Chat/           # 聊天相关组件
-│   ├── QuickMenu/      # 快捷功能菜单
-│   ├── History/        # 历史记录组件
-│   ├── Settings/       # 设置页面组件
-│   ├── Progress/        # 阅读进度组件
-│   └── ConceptMap/     # 概念图谱组件
-├── pages/              # 页面组件
-├── contexts/           # React Context
-├── hooks/              # 自定义Hooks
-├── services/           # API服务
-├── utils/              # 工具函数
-├── types/              # TypeScript类型定义
-└── styles/             # 全局样式
-```
-
-## 快速开始
-
-```bash
-# 安装依赖
-cd ai-reading-assistant
-npm install
-
-# 开发模式
-npm run dev
-
-# 构建
-npm run build
-
-# 初始化Capacitor
-npm run build
-npx cap add android
-
-# 同步构建到Android
-npx cap sync
-
-# 打开Android Studio
-npx cap open android
-```
-
-## 许可证
-
-See LICENSE file.
